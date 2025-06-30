@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Story - Medicare{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'images/aboutUs-hero.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        margin-bottom: 80px;
+        position: relative;
+    }
+    
+    .about-hero h1 {
+        animation: fadeInDown 1s ease-out;
+    }
+    
+    .about-hero p {
+        animation: fadeInUp 1s ease-out 0.3s;
+        animation-fill-mode: both;
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Timeline */
+    .timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 60px auto;
+    }
+    
+    .timeline::after {
+        content: '';
+        position: absolute;
+        width: 6px;
+        background-color: #e9ecef;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -3px;
+    }
+    
+    .timeline-container {
+        padding: 10px 40px;
+        position: relative;
+        background-color: inherit;
+        width: 50%;
+    }
+    
+    .timeline-container::after {
+        content: '';
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background-color: white;
+        border: 4px solid #0d6efd;
+        top: 15px;
+        border-radius: 50%;
+        z-index: 1;
+    }
+    
+    .left {
+        left: 0;
+    }
+    
+    .right {
+        left: 50%;
+    }
+    
+    .left::before {
+        content: " ";
+        height: 0;
+        position: absolute;
+        top: 22px;
+        width: 0;
+        z-index: 1;
+        right: 30px;
+        border: medium solid #f8f9fa;
+        border-width: 10px 0 10px 10px;
+        border-color: transparent transparent transparent #f8f9fa;
+    }
+    
+    .right::before {
+        content: " ";
+        height: 0;
+        position: absolute;
+        top: 22px;
+        width: 0;
+        z-index: 1;
+        left: 30px;
+        border: medium solid #f8f9fa;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent #f8f9fa transparent transparent;
+    }
+    
+    .left::after {
+        right: -12px;
+    }
+    
+    .right::after {
+        left: -12px;
+    }
+    
+    .timeline-content {
+        padding: 20px 30px;
+        background-color: #f8f9fa;
+        position: relative;
+        border-radius: 6px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .timeline-year {
+        color: #0d6efd;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+    
+    /* Team Section */
+    .team-member {
+        margin-bottom: 30px;
+    }
+    
+    .team-member img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Values Section */
+    .value-card {
+        padding: 30px 20px;
+        border-radius: 8px;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .value-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .value-icon {
+        font-size: 40px;
+        margin-bottom: 20px;
+        color: #0d6efd;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .timeline::after {
+            left: 31px;
+        }
+        
+        .timeline-container {
+            width: 100%;
+            padding-left: 70px;
+            padding-right: 25px;
+        }
+        
+        .timeline-container::before {
+            left: 60px;
+            border: medium solid #f8f9fa;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent #f8f9fa transparent transparent;
+        }
+        
+        .left::after, .right::after {
+            left: 19px;
+        }
+        
+        .right {
+            left: 0%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Our Story</h1>
+        <p class="lead mb-4">A journey of healing, innovation, and compassionate care since 1995</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-center">
+                    <a href="#timeline" class="btn btn-primary me-3 px-4 py-2">Our Journey</a>
+                    <a href="#leadership" class="btn btn-outline-light px-4 py-2">Meet Our Team</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction Section -->
+<section class="container mb-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 class="mb-4">Committed to Excellence in Healthcare</h2>
+            <p class="lead">For nearly three decades, Medicare has been at the forefront of healthcare excellence, driven by our unwavering commitment to patient-centered care.</p>
+            <p>Our journey began with a simple yet profound mission: to provide accessible, high-quality healthcare services to our community while treating each patient with dignity, respect, and compassion.</p>
+            <p>Today, Medicare has grown into one of the region's most trusted healthcare providers, offering comprehensive medical services across multiple specialties. Our team of experienced healthcare professionals works tirelessly to uphold the highest standards of medical practice and patient care.</p>
+        </div>
+        <div class="col-lg-6">
+            <img src="{% static 'images/hospital2.jpg' %}" alt="Medicare Hospital Building" class="img-fluid rounded shadow">
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Section -->
+<section id="timeline" class="bg-light py-5 mb-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Journey Through the Years</h2>
+        
+        <div class="timeline">
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <p class="timeline-year">1995</p>
+                    <h4>The Beginning</h4>
+                    <p>Medicare was founded by Dr. James Roberts with a small clinic and a team of 5 dedicated healthcare professionals.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <p class="timeline-year">2000</p>
+                    <h4>Expansion of Services</h4>
+                    <p>Expanded to include specialized departments in Cardiology, Neurology, and Pediatrics, serving over 10,000 patients annually.</p>
+                </div>
+            </div>
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <p class="timeline-year">2008</p>
+                    <h4>New Hospital Building</h4>
+                    <p>Moved to our current state-of-the-art facility with 200 beds and advanced medical equipment.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <p class="timeline-year">2015</p>
+                    <h4>Research & Innovation</h4>
+                    <p>Established our Research & Development department, focusing on innovative medical treatments and technologies.</p>
+                </div>
+            </div>
+            <div class="timeline-container left">
+                <div class="timeline-content">
+                    <p class="timeline-year">2020</p>
+                    <h4>Pandemic Response</h4>
+                    <p>Led the community response to the global pandemic, treating over 5,000 COVID-19 patients with a recovery rate of 97%.</p>
+                </div>
+            </div>
+            <div class="timeline-container right">
+                <div class="timeline-content">
+                    <p class="timeline-year">2025</p>
+                    <h4>Today & Beyond</h4>
+                    <p>Continuing our mission with over 500 healthcare professionals, serving more than 100,000 patients yearly, and looking forward to future innovations in patient care.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values Section -->
+<section class="container mb-5">
+    <h2 class="text-center mb-5">Our Core Values</h2>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="value-card shadow-sm border h-100">
+                <div class="text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Compassion</h4>
+                    <p>We treat every patient with kindness, empathy, and respect, understanding that healthcare is not just about treating illness but caring for people.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="value-card shadow-sm border h-100">
+                <div class="text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h4>Excellence</h4>
+                    <p>We strive for excellence in everything we do, from medical procedures to patient interactions, constantly improving our skills and services.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="value-card shadow-sm border h-100">
+                <div class="text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h4>Teamwork</h4>
+                    <p>We believe in the power of collaboration, working together across disciplines to provide the best possible care for our patients.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="value-card shadow-sm border h-100">
+                <div class="text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>Innovation</h4>
+                    <p>We embrace new ideas, technologies, and approaches to medicine, constantly seeking better ways to diagnose, treat, and prevent illness.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="value-card shadow-sm border h-100">
+                <div class="text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Integrity</h4>
+                    <p>We uphold the highest ethical standards, ensuring honesty, transparency, and accountability in all our actions and decisions.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="value-card shadow-sm border h-100">
+                <div class="text-center">
+                    <div class="value-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h4>Community</h4>
+                    <p>We are committed to serving our community, addressing healthcare disparities, and improving public health through education and outreach.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Leadership Team Section -->
+<section id="leadership" class="bg-light py-5 mb-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Leadership Team</h2>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-3 team-member text-center">
+                <img src="{% static 'images/doctor1.jpg' %}" alt="Dr. James Roberts" class="mb-3">
+                <h5>Dr. James Roberts</h5>
+                <p class="text-muted">Founder & CEO</p>
+            </div>
+            <div class="col-md-3 team-member text-center">
+                <img src="{% static 'images/doctor2.jpg' %}" alt="Dr. Sarah Johnson" class="mb-3">
+                <h5>Dr. Sarah Johnson</h5>
+                <p class="text-muted">Chief Medical Officer</p>
+            </div>
+            <div class="col-md-3 team-member text-center">
+                <img src="{% static 'images/doctor3.jpg' %}" alt="Dr. Michael Chen" class="mb-3">
+                <h5>Dr. Michael Chen</h5>
+                <p class="text-muted">Director of Research</p>
+            </div>
+            <div class="col-md-3 team-member text-center">
+                <img src="{% static 'images/doctor4.jpg' %}" alt="Dr. Emily Wilson" class="mb-3">
+                <h5>Dr. Emily Wilson</h5>
+                <p class="text-muted">Head of Patient Care</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="container mb-5 text-center">
+    <div class="p-5 bg-primary text-white rounded">
+        <h2 class="mb-4">Join Us in Our Mission</h2>
+        <p class="lead mb-4">Whether you're seeking care, pursuing a career in healthcare, or looking to partner with us, we invite you to be part of our journey.</p>
+        <div>
+            <a href="{% url 'contact' %}" class="btn btn-light btn-lg me-2 mb-2">Contact Us</a>
+            <a href="{% url 'appointment' %}" class="btn btn-outline-light btn-lg mb-2">Book an Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('.about-hero a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Account for fixed header
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

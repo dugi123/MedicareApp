@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - Medicare{% endblock %}
+
+{% block extra_css %}
+<style>
+    .signup-container {
+        max-width: 500px;
+        margin: 80px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    
+    .signup-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .signup-form .form-control {
+        height: 50px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .signup-form .btn {
+        height: 50px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    .auth-links {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    /* ID Card Upload Styles */
+    .id-card-preview {
+        max-height: 200px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    
+    .id-card-upload-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .id-card-upload-btn:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
+    }
+    
+    /* ID Card Form Section */
+    .id-card-section {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #f8f9fa;
+    }
+    
+    .id-card-section h5 {
+        margin-bottom: 15px;
+        color: #0d6efd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="signup-container">
+        <div class="signup-header">
+            <img src="{% static 'images/logo-hospital.svg' %}" alt="Medicare Logo" height="70" class="mb-4">
+            <h2>Create an Account</h2>
+            <p class="text-muted">Register with your ID card for personalized healthcare services</p>
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-info-circle me-2"></i> New users must upload both front and back images of their ID card for verification.
+            </div>
+        </div>
+        
+        <form class="signup-form" method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="first-name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first-name" name="first_name" placeholder="Enter your first name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="last-name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Enter your last name" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+            
+            <div class="id-card-section">
+                <h5>ID Card Information</h5>            <div class="mb-3">
+                <label for="id-card-name" class="form-label">Full Name (as on ID Card)</label>
+                <input type="text" class="form-control" id="id-card-name" name="id_card_name" placeholder="Enter the full name as it appears on your ID card" required>
+            </div>
+            <div class="mb-3">
+                <label for="id-card-number" class="form-label">ID Card Number</label>
+                <input type="text" class="form-control" id="id-card-number" name="id_card_number" placeholder="Enter your ID card number" required>
+            </div>
+            
+            <div class="id-card-section mb-4">
+                <h5><i class="fas fa-id-card me-2"></i>ID Card Images (Required for Registration)</h5>
+                <div class="mb-3">
+                    <label for="id-card-upload-front" class="form-label">Upload ID Card (Front)</label>
+                    <input type="file" class="form-control" id="id-card-upload-front" name="id_card_front" accept="image/*" required>
+                    <div class="form-text">Please upload a clear image of the front of your ID card</div>
+                    <div id="id-preview-container-front" class="mt-2 d-none">
+                        <img id="id-preview-front" src="#" alt="ID Card Front Preview" class="img-fluid mt-2 border rounded" style="max-height: 200px;">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="id-card-upload-back" class="form-label">Upload ID Card (Back)</label>
+                    <input type="file" class="form-control" id="id-card-upload-back" name="id_card_back" accept="image/*" required>
+                    <div class="form-text">Please upload a clear image of the back of your ID card</div>
+                    <div id="id-preview-container-back" class="mt-2 d-none">
+                        <img id="id-preview-back" src="#" alt="ID Card Back Preview" class="img-fluid mt-2 border rounded" style="max-height: 200px;">
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                <label class="form-check-label" for="terms">I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a></label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+        </form>
+        
+        <div class="auth-links">
+            <p>Already have an account? <a href="{% url 'login' %}" class="text-primary">Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const signupForm = document.querySelector('.signup-form');
+        const idCardFrontInput = document.getElementById('id-card-upload-front');
+        const idCardBackInput = document.getElementById('id-card-upload-back');
+        const idPreviewFront = document.getElementById('id-preview-front');
+        const idPreviewBack = document.getElementById('id-preview-back');
+        const idPreviewContainerFront = document.getElementById('id-preview-container-front');
+        const idPreviewContainerBack = document.getElementById('id-preview-container-back');
+        
+        // Show preview of uploaded ID card front image
+        idCardFrontInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    idPreviewFront.src = e.target.result;
+                    idPreviewContainerFront.classList.remove('d-none');
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        
+        // Show preview of uploaded ID card back image
+        idCardBackInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    idPreviewBack.src = e.target.result;
+                    idPreviewContainerBack.classList.remove('d-none');
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation (in a real app, this would be server-side)
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const idCardName = document.getElementById('id-card-name').value;
+            const idCardNumber = document.getElementById('id-card-number').value;
+            const idCardFront = document.getElementById('id-card-upload-front').files[0];
+            const idCardBack = document.getElementById('id-card-upload-back').files[0];
+            const phone = document.getElementById('phone').value;
+            const terms = document.getElementById('terms').checked;
+            
+            if (!firstName || !lastName || !idCardName || !idCardNumber || !phone) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            if (!idCardFront) {
+                alert('Please upload the front of your ID card.');
+                return;
+            }
+            
+            if (!idCardBack) {
+                alert('Please upload the back of your ID card.');
+                return;
+            }
+            
+            if (!terms) {
+                alert('Please agree to the Terms of Service and Privacy Policy.');
+                return;
+            }
+            
+            // Show loading indicator (optional)
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Creating account...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call delay (remove in real app)
+            setTimeout(function() {
+                // Redirect to profile page
+                window.location.href = "{% url 'profile' %}";
+            }, 1500);
+        });
+    });
+</script>
+{% endblock %}

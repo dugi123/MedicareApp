@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 300 80">
+  <!-- Definitions -->
+  <defs>
+    <!-- Primary blue gradient -->
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2c5aa0" />
+      <stop offset="100%" stop-color="#1e3c68" />
+    </linearGradient>
+    
+    <!-- Secondary teal accent -->
+    <linearGradient id="secondary-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3ebdc2" />
+      <stop offset="100%" stop-color="#2b9196" />
+    </linearGradient>
+    
+    <!-- Shadow effect -->
+    <filter id="drop-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+      <feOffset dx="0" dy="1" result="offsetblur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    
+    <!-- Clip path for heartbeat monitor -->
+    <clipPath id="rounded-clip">
+      <rect x="30" y="20" width="45" height="40" rx="5" ry="5" />
+    </clipPath>
+  </defs>
+  
+  <!-- Logo Group -->
+  <g filter="url(#drop-shadow)">
+    <!-- Hospital Symbol: Building with cross -->
+    <rect x="30" y="20" width="45" height="40" rx="5" ry="5" fill="url(#primary-gradient)" />
+    <rect x="43" y="25" width="20" height="35" rx="2" ry="2" fill="white" opacity="0.9" />
+    <rect x="35" y="35" width="35" height="5" rx="2" ry="2" fill="white" opacity="0.9" />
+    
+    <!-- Heartbeat Line (clipped to the building) -->
+    <g clip-path="url(#rounded-clip)">
+      <path d="M25,40 L40,40 L45,25 L52,55 L60,25 L65,40 L80,40" 
+            stroke="url(#secondary-gradient)" stroke-width="3" fill="none" 
+            stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    
+    <!-- Text Elements -->
+    <g>
+      <!-- Medicare Name -->
+      <text x="90" y="40" font-family="'Montserrat', 'Helvetica Neue', sans-serif" font-size="22" font-weight="700" fill="#2c5aa0">MEDICARE</text>
+      
+      <!-- Separator -->
+      <line x1="90" y1="48" x2="220" y2="48" stroke="url(#secondary-gradient)" stroke-width="2" stroke-linecap="round" />
+      
+      <!-- Tagline -->
+      <text x="90" y="62" font-family="'Montserrat', 'Helvetica Neue', sans-serif" font-size="12" font-weight="400" letter-spacing="1" fill="#555555">HOSPITAL &amp; RESEARCH CENTER</text>
+    </g>
+  </g>
+</svg>

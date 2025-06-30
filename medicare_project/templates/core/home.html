@@ -1,0 +1,604 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Medicare - Quality Healthcare Services{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Remove the background image from hero-section since we're using carousel backgrounds */
+    .hero-section {
+        color: white;
+        padding: 0;
+    }
+    
+    .carousel-item {
+        height: 600px;
+    }
+    
+    .carousel-caption {
+        bottom: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0 15%;
+    }
+    
+    .feature-box {
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .feature-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .service-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .doctor-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .doctor-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .doctor-img {
+        height: 250px;
+        object-fit: cover;
+    }
+    
+    .testimonial-section {
+        background-color: #f8f9fa;
+        padding: 80px 0;
+    }
+    
+    .testimonial-card {
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin: 15px;
+    }
+    
+    .testimonial-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .stats-box {
+        padding: 30px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .stats-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #0d6efd;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Carousel -->
+<section class="hero-section">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/hero-bg.jpg" %}'); background-size: cover; background-position: center; height: 600px;">
+                <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                    <h1 class="display-3 fw-bold mb-4">World-Class Healthcare at Your Doorstep</h1>
+                    <p class="lead mb-5">Providing exceptional medical care with compassion and expertise for over 25 years</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="{% url 'appointment' %}" class="btn btn-primary btn-lg me-3">Book an Appointment</a>
+                        <a href="{% url 'services' %}" class="btn btn-outline-light btn-lg">Our Services</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/hero-bg2.jpg" %}'); background-size: cover; background-position: center; height: 600px;">
+                <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                    <h1 class="display-3 fw-bold mb-4">Advanced Medical Technology</h1>
+                    <p class="lead mb-5">State-of-the-art facilities designed to deliver the best treatment options</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="{% url 'appointment' %}" class="btn btn-primary btn-lg me-3">Book an Appointment</a>
+                        <a href="{% url 'services' %}" class="btn btn-outline-light btn-lg">Our Services</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/hero-bg3.jpg" %}'); background-size: cover; background-position: center; height: 600px;">
+                <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                    <h1 class="display-3 fw-bold mb-4">Expert Medical Professionals</h1>
+                    <p class="lead mb-5">Our team of dedicated specialists are committed to your health and well-being</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="{% url 'appointment' %}" class="btn btn-primary btn-lg me-3">Book an Appointment</a>
+                        <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">About Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-box bg-primary text-white">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-user-md fa-3x me-3"></i>
+                        <h4 class="mb-0">Expert Doctors</h4>
+                    </div>
+                    <p>Our team consists of highly qualified medical professionals who are experts in their respective fields.</p>
+                    <a href="{% url 'doctors' %}" class="btn btn-light mt-2">Meet Our Doctors</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box bg-success text-white">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-procedures fa-3x me-3"></i>
+                        <h4 class="mb-0">Emergency Care</h4>
+                    </div>
+                    <p>24/7 emergency services with state-of-the-art facilities to handle any medical emergency.</p>
+                    <a href="tel:+1234567890" class="btn btn-light mt-2">Call Emergency</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-box bg-info text-white">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-calendar-check fa-3x me-3"></i>
+                        <h4 class="mb-0">Online Booking</h4>
+                    </div>
+                    <p>Book appointments online at your convenience and save time with our efficient scheduling system.</p>
+                    <a href="{% url 'appointment' %}" class="btn btn-light mt-2">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="{% static 'images/hospital2.jpg' %}" alt="Medicare Hospital" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-6">
+                <h2 class="mb-4">About Medicare</h2>
+                <p class="lead">Providing Quality Healthcare Since 1995</p>
+                <p>Medicare is a premier healthcare institution committed to providing exceptional medical services with a focus on patient care and cutting-edge technology.</p>
+                <p>Our state-of-the-art facilities, combined with a team of dedicated healthcare professionals, ensure that every patient receives the highest standard of medical care tailored to their individual needs.</p>
+                <div class="d-flex mt-4">
+                    <a href="{% url 'about' %}" class="btn btn-primary me-3">Learn More</a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-primary">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <h2 class="mb-3">Our Specialized Services</h2>
+                <p class="lead">Comprehensive healthcare services to meet all your medical needs</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <img src="{% static 'images/cardiology.jpg' %}" alt="Cardiology" class="img-fluid">
+                    <div class="p-4">
+                        <h4>Cardiology</h4>
+                        <p>Comprehensive heart care including diagnostics, treatment, and preventive care by experienced cardiologists.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <img src="{% static 'images/orthopedics.jpg' %}" alt="Orthopedics" class="img-fluid">
+                    <div class="p-4">
+                        <h4>Orthopedics</h4>
+                        <p>Advanced diagnosis and treatment of musculoskeletal conditions by skilled orthopedic surgeons.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <img src="{% static 'images/neurology.jpg' %}" alt="Neurology" class="img-fluid">
+                    <div class="p-4">
+                        <h4>Neurology</h4>
+                        <p>Expert care for neurological disorders by specialized neurologists using the latest technology.</p>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'services' %}" class="btn btn-primary">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Doctors Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <h2 class="mb-3">Meet Our Specialists</h2>
+                <p class="lead">Experienced doctors dedicated to providing the best healthcare</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="doctor-card">
+                    <img src="{% static 'images/doctor1.jpg' %}" alt="Dr. John Smith" class="img-fluid doctor-img">
+                    <div class="p-3 text-center">
+                        <h5>Dr. John Smith</h5>
+                        <p class="text-muted">Cardiologist</p>
+                        <div class="social-icons mb-2">
+                            <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-info me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-danger"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="doctor-card">
+                    <img src="{% static 'images/doctor2.jpg' %}" alt="Dr. Sarah Johnson" class="img-fluid doctor-img">
+                    <div class="p-3 text-center">
+                        <h5>Dr. Sarah Johnson</h5>
+                        <p class="text-muted">Neurologist</p>
+                        <div class="social-icons mb-2">
+                            <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-info me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-danger"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="doctor-card">
+                    <img src="{% static 'images/doctor3.jpg' %}" alt="Dr. Michael Chen" class="img-fluid doctor-img">
+                    <div class="p-3 text-center">
+                        <h5>Dr. Michael Chen</h5>
+                        <p class="text-muted">Orthopedic Surgeon</p>
+                        <div class="social-icons mb-2">
+                            <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-info me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-danger"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="doctor-card">
+                    <img src="{% static 'images/doctor4.jpg' %}" alt="Dr. Emily Wilson" class="img-fluid doctor-img">
+                    <div class="p-3 text-center">
+                        <h5>Dr. Emily Wilson</h5>
+                        <p class="text-muted">Pediatrician</p>
+                        <div class="social-icons mb-2">
+                            <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-info me-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-danger"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'doctors' %}" class="btn btn-primary">View All Doctors</a>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <h2 class="mb-3">Our Success in Numbers</h2>
+                <p class="lead">We take pride in our achievements and the trust our patients place in us</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <i class="fas fa-user-md fa-3x text-primary mb-3"></i>
+                    <div class="stats-number">50+</div>
+                    <h5>Specialist Doctors</h5>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <i class="fas fa-procedures fa-3x text-primary mb-3"></i>
+                    <div class="stats-number">10K+</div>
+                    <h5>Patients Treated</h5>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <i class="fas fa-hospital fa-3x text-primary mb-3"></i>
+                    <div class="stats-number">5</div>
+                    <h5>Locations</h5>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-box">
+                    <i class="fas fa-award fa-3x text-primary mb-3"></i>
+                    <div class="stats-number">25+</div>
+                    <h5>Years of Excellence</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonial-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <h2 class="mb-3">What Our Patients Say</h2>
+                <p class="lead">Don't just take our word for it - hear from our satisfied patients</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{% static 'images/patient1.jpg' %}" alt="Patient 1" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-0">Robert Johnson</h5>
+                            <small class="text-muted">Cardiac Patient</small>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p>"The care I received at Medicare was exceptional. Dr. Smith and his team were thorough, compassionate, and made sure I understood every aspect of my treatment."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{% static 'images/patient2.jpg' %}" alt="Patient 2" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-0">Maria Garcia</h5>
+                            <small class="text-muted">Orthopedic Patient</small>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p>"After struggling with knee pain for years, the orthopedic team at Medicare helped me regain my mobility. The surgery was a success, and the follow-up care was excellent."</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{% static 'images/patient3.jpg' %}" alt="Patient 3" class="testimonial-img me-3">
+                        <div>
+                            <h5 class="mb-0">David Thompson</h5>
+                            <small class="text-muted">Neurology Patient</small>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                    </div>
+                    <p>"The neurological team at Medicare is simply outstanding. Their expertise and the advanced technology they use made all the difference in my treatment and recovery."</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary">Read More Testimonials</a>
+        </div>
+    </div>
+</section>
+
+{% comment %} <!-- Appointment Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h2 class="mb-4">Book an Appointment</h2>
+                <p class="lead">Schedule a consultation with our specialists today</p>
+                <p>Fill out the form, and our team will get back to you to confirm your appointment. For emergencies, please call our emergency hotline.</p>
+                <div class="d-flex align-items-center mt-4">
+                    <i class="fas fa-phone-alt fa-2x text-primary me-3"></i>
+                    <div>
+                        <h5 class="mb-0">Emergency Hotline</h5>
+                        <p class="mb-0">(123) 456-7890</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4">Appointment Request</h4>
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                <select class="form-select" id="department" required>
+                                    <option value="" selected disabled>Select Department</option>
+                                    <option value="cardiology">Cardiology</option>
+                                    <option value="neurology">Neurology</option>
+                                    <option value="orthopedics">Orthopedics</option>
+                                    <option value="pediatrics">Pediatrics</option>
+                                    <option value="general">General Medicine</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Preferred Date</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Additional Information</label>
+                                <textarea class="form-control" id="message" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Submit Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+<!-- Blog Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <h2 class="mb-3">Latest Health Articles</h2>
+                <p class="lead">Stay informed with our health tips and medical insights</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{% static 'images/blog1.jpg' %}" class="card-img-top" alt="Blog 1">
+                    <div class="card-body">
+                        <small class="text-muted">June 25, 2025</small>
+                        <h5 class="card-title mt-2">Understanding Heart Health: Prevention Tips</h5>
+                        <p class="card-text">Learn about the latest research on heart health and simple lifestyle changes that can reduce your risk of heart disease.</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="{% url 'blog' %}" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{% static 'images/blog2.jpg' %}" class="card-img-top" alt="Blog 2">
+                    <div class="card-body">
+                        <small class="text-muted">June 20, 2025</small>
+                        <h5 class="card-title mt-2">The Importance of Mental Health Care</h5>
+                        <p class="card-text">Discover the connection between mental and physical health, and strategies for maintaining good mental wellbeing.</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="{% url 'blog' %}" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{% static 'images/blog3.jpg' %}" class="card-img-top" alt="Blog 3">
+                    <div class="card-body">
+                        <small class="text-muted">June 15, 2025</small>
+                        <h5 class="card-title mt-2">Nutrition Tips for a Healthier Lifestyle</h5>
+                        <p class="card-text">Expert advice on creating a balanced diet that supports your health goals and boosts your immune system.</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="{% url 'blog' %}" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'blog' %}" class="btn btn-primary">View All Articles</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize the hero carousel
+    document.addEventListener('DOMContentLoaded', function() {
+        // The carousel will automatically initialize with data-bs-ride="carousel"
+        // Here we can add additional functionality if needed
+        
+        // For example, pause the carousel when a modal is opened
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('show.bs.modal', function() {
+                const heroCarousel = document.getElementById('heroCarousel');
+                const carousel = bootstrap.Carousel.getInstance(heroCarousel);
+                if (carousel) {
+                    carousel.pause();
+                }
+            });
+            
+            modal.addEventListener('hidden.bs.modal', function() {
+                const heroCarousel = document.getElementById('heroCarousel');
+                const carousel = bootstrap.Carousel.getInstance(heroCarousel);
+                if (carousel) {
+                    carousel.cycle();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

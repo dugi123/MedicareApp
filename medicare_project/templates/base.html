@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Medicare - Healthcare Services{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo-hospital.svg' %}">
+    <link rel="alternate icon" href="{% static 'images/logo-hospital.svg' %}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{% static 'images/logo-hospital.svg' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo-hospital.svg' %}" alt="Medicare Logo" height="60">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="nav-link dropdown-toggle btn btn-link" type="button" id="aboutDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                About Us
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                                <li><a class="dropdown-item" href="{% url 'about' %}">Our Story</a></li>
+                                <li><a class="dropdown-item" href="{% url 'doctors' %}">Our Doctors</a></li>
+                                <li><a class="dropdown-item" href="{% url 'facilities' %}">Facilities</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <button class="nav-link dropdown-toggle btn btn-link" type="button" id="servicesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Services
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                                <li><a class="dropdown-item" href="{% url 'services' %}">All Services</a></li>
+                                <li><a class="dropdown-item" href="{% url 'specialties' %}">Specialties</a></li>
+                                <li><a class="dropdown-item" href="{% url 'treatments' %}">Treatments</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'blog' %}">Health Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        {% comment %} <a href="{% url 'appointment' %}" class="btn btn-primary me-2">Book Appointment</a> {% endcomment %}
+                        <a href="tel:+1234567890" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-phone-alt me-2"></i>Emergency: 123-456-7890
+                        </a>
+                        
+                        <!-- Authentication dropdown - For demo purposes only -->
+                        <!-- In a real app, you would check if the user is authenticated -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i> Account
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
+                                <li><h6 class="dropdown-header">Guest User</h6></li>
+                                <li><a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+                                <li><a class="dropdown-item" href="{% url 'signup' %}"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">Demo Features</h6></li>
+                                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-id-card me-2"></i>View Profile Demo</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h5>Medicare</h5>
+                    <p>Providing quality healthcare services since 1995. Our mission is to ensure every patient receives the best care possible.</p>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                        <li><a href="{% url 'about' %}" class="text-white">About Us</a></li>
+                        <li><a href="{% url 'services' %}" class="text-white">Services</a></li>
+                        <li><a href="{% url 'doctors' %}" class="text-white">Doctors</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Services</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Emergency Care</a></li>
+                        <li><a href="#" class="text-white">Cardiology</a></li>
+                        <li><a href="#" class="text-white">Neurology</a></li>
+                        <li><a href="#" class="text-white">Orthopedics</a></li>
+                        <li><a href="#" class="text-white">Pediatrics</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Contact Us</h5>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Healthcare St, Medical City, MC 12345</p>
+                        <p><i class="fas fa-phone-alt me-2"></i> (123) 456-7890</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@medicare.com</p>
+                    </address>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; {% now "Y" %} Medicare. All Rights Reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p><a href="#" class="text-white">Privacy Policy</a> | <a href="#" class="text-white">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

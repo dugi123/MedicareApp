@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#f5f5f5"/>
+  
+  <!-- Sky Background -->
+  <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#b3e0ff"/>
+    <stop offset="100%" stop-color="#e6f7ff"/>
+  </linearGradient>
+  <rect x="0" y="0" width="800" height="300" fill="url(#sky)"/>
+  
+  <!-- Grassy Ground -->
+  <rect x="0" y="300" width="800" height="200" fill="#a8e6cf"/>
+  
+  <!-- Hospital Building -->
+  <g>
+    <!-- Main Building -->
+    <rect x="200" y="100" width="400" height="250" fill="#ffffff" stroke="#cccccc" stroke-width="2"/>
+    
+    <!-- Roof -->
+    <rect x="180" y="80" width="440" height="30" fill="#3498db"/>
+    
+    <!-- Windows -->
+    <g>
+      <!-- Left Windows -->
+      <rect x="230" y="140" width="40" height="60" fill="#d4f1f9" stroke="#3498db" stroke-width="2"/>
+      <rect x="230" y="220" width="40" height="60" fill="#d4f1f9" stroke="#3498db" stroke-width="2"/>
+      
+      <!-- Middle Windows -->
+      <rect x="380" y="140" width="40" height="60" fill="#d4f1f9" stroke="#3498db" stroke-width="2"/>
+      
+      <!-- Right Windows -->
+      <rect x="530" y="140" width="40" height="60" fill="#d4f1f9" stroke="#3498db" stroke-width="2"/>
+      <rect x="530" y="220" width="40" height="60" fill="#d4f1f9" stroke="#3498db" stroke-width="2"/>
+    </g>
+    
+    <!-- Entrance -->
+    <rect x="350" y="250" width="100" height="100" fill="#3498db"/>
+    <rect x="375" y="270" width="50" height="80" fill="#f8f8f8"/>
+    
+    <!-- Cross Symbol -->
+    <rect x="390" y="120" width="20" height="60" fill="#e74c3c"/>
+    <rect x="370" y="140" width="60" height="20" fill="#e74c3c"/>
+  </g>
+  
+  <!-- Road -->
+  <rect x="380" y="350" width="40" height="150" fill="#555555"/>
+  
+  <!-- Trees -->
+  <g>
+    <!-- Left Tree -->
+    <circle cx="150" cy="320" r="40" fill="#66bb6a"/>
+    <rect x="145" y="320" width="10" height="50" fill="#795548"/>
+    
+    <!-- Right Tree -->
+    <circle cx="650" cy="320" r="40" fill="#66bb6a"/>
+    <rect x="645" y="320" width="10" height="50" fill="#795548"/>
+  </g>
+  
+  <!-- Clouds -->
+  <g fill="#ffffff" opacity="0.8">
+    <ellipse cx="120" cy="70" rx="50" ry="30"/>
+    <ellipse cx="650" cy="50" rx="70" ry="30"/>
+  </g>
+  
+  <!-- Hospital Text -->
+  <text x="400" y="450" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">MEDICARE HOSPITAL</text>
+</svg>

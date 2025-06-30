@@ -1,0 +1,636 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Health Blog - Medicare{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .blog-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'images/blog-hero.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        margin-bottom: 60px;
+        position: relative;
+    }
+    
+    .blog-hero h1 {
+        animation: fadeInDown 1s ease-out;
+    }
+    
+    .blog-hero p {
+        animation: fadeInUp 1s ease-out 0.3s;
+        animation-fill-mode: both;
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Blog Cards */
+    .blog-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .blog-card .card-img-top {
+        height: 240px;
+        object-fit: cover;
+    }
+    
+    .blog-card .card-body {
+        padding: 25px;
+    }
+    
+    .blog-category {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 5px 15px;
+        border-radius: 30px;
+        margin-bottom: 15px;
+    }
+    
+    .category-health {
+        background-color: #e3f2fd;
+        color: #0d6efd;
+    }
+    
+    .category-nutrition {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .category-wellness {
+        background-color: #fff8e1;
+        color: #ff8f00;
+    }
+    
+    .category-medical {
+        background-color: #f3e5f5;
+        color: #8e24aa;
+    }
+    
+    .blog-author {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    .author-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+    
+    .author-info {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .author-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    .publish-date {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    /* Featured Article */
+    .featured-article {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 50px;
+    }
+    
+    .featured-img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+    }
+    
+    .featured-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 30px;
+        background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        color: white;
+    }
+    
+    /* Categories Sidebar */
+    .categories-sidebar {
+        position: sticky;
+        top: 100px;
+    }
+    
+    .category-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .category-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .category-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .category-list li a {
+        text-decoration: none;
+        color: #212529;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .category-list li a:hover {
+        color: #0d6efd;
+    }
+    
+    .category-count {
+        background-color: #f8f9fa;
+        border-radius: 50px;
+        padding: 3px 10px;
+        font-size: 0.8rem;
+    }
+    
+    /* Search Bar */
+    .blog-search {
+        position: relative;
+        margin-bottom: 30px;
+    }
+    
+    .blog-search input {
+        border-radius: 50px;
+        padding: 12px 20px;
+        padding-right: 50px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .blog-search button {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    /* Newsletter */
+    .newsletter {
+        background-color: #f8f9fa;
+        padding: 40px;
+        border-radius: 12px;
+        margin-top: 40px;
+    }
+    
+    .newsletter-form {
+        display: flex;
+    }
+    
+    .newsletter-form input {
+        flex: 1;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: none;
+    }
+    
+    .newsletter-form button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="blog-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Health & Wellness Blog</h1>
+        <p class="lead mb-0">Stay informed with the latest health tips, research, and medical insights</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Featured Article -->
+            <div class="featured-article shadow">
+                <img src="{% static 'images/blog1.jpg' %}" class="featured-img" alt="Featured Article">
+                <div class="featured-content">
+                    <span class="blog-category category-health">Healthcare</span>
+                    <h2 class="mb-3">Understanding Heart Health: Prevention Tips for Every Age</h2>
+                    <p class="mb-4">Learn about the latest research on heart health and simple lifestyle changes that can reduce your risk of heart disease at any age.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="blog-author">
+                            <img src="{% static 'images/doctor1.jpg' %}" alt="Dr. Sarah Johnson" class="author-img">
+                            <div class="author-info">
+                                <p class="author-name">Dr. Sarah Johnson</p>
+                                <span class="publish-date">June 25, 2025</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-light">Read Full Article</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blog Posts Grid -->
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card blog-card shadow-sm">
+                        <img src="{% static 'images/blog2.jpg' %}" class="card-img-top" alt="Mental Health Article">
+                        <div class="card-body">
+                            <span class="blog-category category-wellness">Mental Wellness</span>
+                            <h5 class="card-title">The Importance of Mental Health Care</h5>
+                            <p class="card-text">Discover the connection between mental and physical health, and strategies for maintaining good mental wellbeing.</p>
+                            <div class="blog-author">
+                                <img src="{% static 'images/doctor2.jpg' %}" alt="Dr. Michael Chen" class="author-img">
+                                <div class="author-info">
+                                    <p class="author-name">Dr. Michael Chen</p>
+                                    <span class="publish-date">June 20, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card blog-card shadow-sm">
+                        <img src="{% static 'images/blog3.jpg' %}" class="card-img-top" alt="Nutrition Article">
+                        <div class="card-body">
+                            <span class="blog-category category-nutrition">Nutrition</span>
+                            <h5 class="card-title">Nutrition Tips for a Healthier Lifestyle</h5>
+                            <p class="card-text">Expert advice on creating a balanced diet that supports your health goals and boosts your immune system.</p>
+                            <div class="blog-author">
+                                <img src="{% static 'images/doctor3.jpg' %}" alt="Dr. Emily Wilson" class="author-img">
+                                <div class="author-info">
+                                    <p class="author-name">Dr. Emily Wilson</p>
+                                    <span class="publish-date">June 15, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card blog-card shadow-sm">
+                        <img src="{% static 'images/cardiology.jpg' %}" class="card-img-top" alt="Technology Article">
+                        <div class="card-body">
+                            <span class="blog-category category-medical">Medical Technology</span>
+                            <h5 class="card-title">New Advancements in Cardiac Treatment</h5>
+                            <p class="card-text">Exploring the latest technological innovations in cardiac care and how they're improving patient outcomes.</p>
+                            <div class="blog-author">
+                                <img src="{% static 'images/doctor4.jpg' %}" alt="Dr. Robert Garcia" class="author-img">
+                                <div class="author-info">
+                                    <p class="author-name">Dr. Robert Garcia</p>
+                                    <span class="publish-date">June 10, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card blog-card shadow-sm">
+                        <img src="{% static 'images/neurology.jpg' %}" class="card-img-top" alt="Exercise Article">
+                        <div class="card-body">
+                            <span class="blog-category category-wellness">Wellness</span>
+                            <h5 class="card-title">Exercise and Brain Health: What You Need to Know</h5>
+                            <p class="card-text">How physical activity impacts cognitive function and brain health across different age groups.</p>
+                            <div class="blog-author">
+                                <img src="{% static 'images/doctor1.jpg' %}" alt="Dr. Sarah Johnson" class="author-img">
+                                <div class="author-info">
+                                    <p class="author-name">Dr. Sarah Johnson</p>
+                                    <span class="publish-date">June 5, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card blog-card shadow-sm">
+                        <img src="{% static 'images/orthopedics.jpg' %}" class="card-img-top" alt="Orthopedics Article">
+                        <div class="card-body">
+                            <span class="blog-category category-health">Healthcare</span>
+                            <h5 class="card-title">Preventing Joint Pain: Tips for All Ages</h5>
+                            <p class="card-text">Practical advice for maintaining joint health and preventing common orthopedic problems.</p>
+                            <div class="blog-author">
+                                <img src="{% static 'images/doctor2.jpg' %}" alt="Dr. Michael Chen" class="author-img">
+                                <div class="author-info">
+                                    <p class="author-name">Dr. Michael Chen</p>
+                                    <span class="publish-date">May 30, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card blog-card shadow-sm">
+                        <img src="{% static 'images/patient1.jpg' %}" class="card-img-top" alt="Patient Care Article">
+                        <div class="card-body">
+                            <span class="blog-category category-medical">Patient Care</span>
+                            <h5 class="card-title">Patient-Centered Care: The Future of Healthcare</h5>
+                            <p class="card-text">How the healthcare industry is evolving to put patients at the center of care decisions and treatment plans.</p>
+                            <div class="blog-author">
+                                <img src="{% static 'images/doctor3.jpg' %}" alt="Dr. Emily Wilson" class="author-img">
+                                <div class="author-info">
+                                    <p class="author-name">Dr. Emily Wilson</p>
+                                    <span class="publish-date">May 25, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="categories-sidebar">
+                <!-- Search -->
+                <div class="blog-search">
+                    <input type="text" class="form-control" placeholder="Search articles...">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <!-- Categories -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Categories</h5>
+                        <ul class="category-list">
+                            <li>
+                                <a href="#">
+                                    <span>Healthcare</span>
+                                    <span class="category-count">12</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Wellness</span>
+                                    <span class="category-count">8</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Nutrition</span>
+                                    <span class="category-count">15</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Medical Technology</span>
+                                    <span class="category-count">6</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Patient Care</span>
+                                    <span class="category-count">9</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>Disease Prevention</span>
+                                    <span class="category-count">11</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Recent Posts -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Recent Posts</h5>
+                        <div class="recent-post d-flex mb-3">
+                            <img src="{% static 'images/blog1.jpg' %}" alt="Recent Post" width="80" height="80" class="rounded me-3" style="object-fit: cover;">
+                            <div>
+                                <h6 class="mb-1"><a href="#" class="text-dark text-decoration-none">Understanding Heart Health</a></h6>
+                                <small class="text-muted">June 25, 2025</small>
+                            </div>
+                        </div>
+                        <div class="recent-post d-flex mb-3">
+                            <img src="{% static 'images/blog2.jpg' %}" alt="Recent Post" width="80" height="80" class="rounded me-3" style="object-fit: cover;">
+                            <div>
+                                <h6 class="mb-1"><a href="#" class="text-dark text-decoration-none">The Importance of Mental Health</a></h6>
+                                <small class="text-muted">June 20, 2025</small>
+                            </div>
+                        </div>
+                        <div class="recent-post d-flex">
+                            <img src="{% static 'images/blog3.jpg' %}" alt="Recent Post" width="80" height="80" class="rounded me-3" style="object-fit: cover;">
+                            <div>
+                                <h6 class="mb-1"><a href="#" class="text-dark text-decoration-none">Nutrition Tips for Health</a></h6>
+                                <small class="text-muted">June 15, 2025</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Popular Tags -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Popular Tags</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Health</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Nutrition</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Wellness</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Cardiology</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Pediatrics</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Mental Health</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Exercise</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Diet</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">COVID-19</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Diabetes</a>
+                            <a href="#" class="badge bg-light text-dark text-decoration-none p-2">Stress</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Newsletter Subscription -->
+                <div class="newsletter">
+                    <h5 class="mb-4">Subscribe to Our Newsletter</h5>
+                    <p class="text-muted mb-4">Get the latest health tips and medical insights directly to your inbox.</p>
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your Email Address" required>
+                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Articles Section -->
+<section class="bg-light py-5 mt-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h3>You Might Also Like</h3>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card blog-card shadow-sm h-100">
+                    <img src="{% static 'images/patient2.jpg' %}" class="card-img-top" alt="Related Article">
+                    <div class="card-body">
+                        <small class="text-muted">May 20, 2025</small>
+                        <h6 class="card-title mt-2">Sleep Habits and Your Health</h6>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card blog-card shadow-sm h-100">
+                    <img src="{% static 'images/patient3.jpg' %}" class="card-img-top" alt="Related Article">
+                    <div class="card-body">
+                        <small class="text-muted">May 15, 2025</small>
+                        <h6 class="card-title mt-2">Vaccines: Myths and Facts</h6>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card blog-card shadow-sm h-100">
+                    <img src="{% static 'images/doctor4.jpg' %}" class="card-img-top" alt="Related Article">
+                    <div class="card-body">
+                        <small class="text-muted">May 10, 2025</small>
+                        <h6 class="card-title mt-2">The Role of Telemedicine Today</h6>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card blog-card shadow-sm h-100">
+                    <img src="{% static 'images/doctor1.jpg' %}" class="card-img-top" alt="Related Article">
+                    <div class="card-body">
+                        <small class="text-muted">May 5, 2025</small>
+                        <h6 class="card-title mt-2">Preventative Health Screenings</h6>
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="container my-5 text-center">
+    <div class="p-5 bg-primary text-white rounded">
+        <h2 class="mb-4">Have a Health Question?</h2>
+        <p class="lead mb-4">Our team of medical professionals is here to help you with any health concerns.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <a href="{% url 'appointment' %}" class="btn btn-light btn-lg d-block mb-3">
+                    <i class="fas fa-calendar-check me-2"></i>Book an Appointment
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg d-block mb-3">
+                    <i class="fas fa-envelope me-2"></i>Contact Our Team
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for Blog Page -->
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize any JavaScript components
+        console.log('Blog page initialized');
+        
+        // You could add functions here for search functionality, category filtering, etc.
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,516 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Medicare{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .contact-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'images/contactUs-bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+        margin-bottom: 80px;
+        position: relative;
+    }
+    
+    .contact-hero h1 {
+        animation: fadeInDown 1s ease-out;
+    }
+    
+    .contact-hero p {
+        animation: fadeInUp 1s ease-out 0.3s;
+        animation-fill-mode: both;
+    }
+    
+    .contact-hero .btn {
+        animation: fadeIn 1.2s ease-out 0.6s;
+        animation-fill-mode: both;
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    /* Contact Info Cards */
+    .contact-card {
+        padding: 30px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        height: 100%;
+        background-color: #fff;
+    }
+    
+    .contact-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .contact-icon {
+        width: 70px;
+        height: 70px;
+        background-color: #e9f5ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+    
+    .contact-icon i {
+        font-size: 30px;
+        color: #0d6efd;
+    }
+    
+    /* Form Styling */
+    .contact-form {
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #e9ecef;
+        margin-bottom: 20px;
+    }
+    
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #0d6efd;
+    }
+    
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+    
+    /* Map Container */
+    .map-container {
+        border-radius: 10px;
+        overflow: hidden;
+        height: 450px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* FAQ Section */
+    .faq-item {
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .faq-header {
+        background-color: #f8f9fa;
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+    }
+    
+    .faq-button {
+        padding: 15px 20px;
+        font-weight: 500;
+        width: 100%;
+        text-align: left;
+        position: relative;
+        border: none;
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+    
+    .faq-button:not(.collapsed) {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .faq-button:focus {
+        box-shadow: none;
+    }
+    
+    .faq-body {
+        padding: 20px;
+        background-color: #fff;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+    }
+    
+    /* Emergency Banner */
+    .emergency-banner {
+        background-color: #dc3545;
+        color: white;
+        padding: 15px 0;
+        font-weight: 500;
+    }
+    
+    .emergency-number {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    
+    /* Departments List */
+    .department-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .department-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .department-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .department-list li i {
+        color: #0d6efd;
+        margin-right: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Emergency Banner -->
+<div class="emergency-banner">
+    <div class="container text-center">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <p class="mb-md-0">For medical emergencies, please call our 24/7 emergency hotline</p>
+            </div>
+            <div class="col-md-4">
+                <a href="tel:+1234567890" class="text-white emergency-number">
+                    <i class="fas fa-phone-alt me-2"></i>123-456-7890
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<section class="contact-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">Contact Us</h1>
+        <p class="lead mb-4">We're here to help you with any questions or concerns</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-center">
+                    <a href="#contact-form" class="btn btn-primary me-3 px-4 py-2">Get in Touch</a>
+                    <a href="tel:+1234567890" class="btn btn-outline-light px-4 py-2"><i class="fas fa-phone-alt me-2"></i>Call Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info Section -->
+<section class="container mb-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="contact-card shadow-sm">
+                <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h4 class="text-center mb-3">Our Location</h4>
+                <p class="text-center mb-0">Matara<br>Southern Province</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="contact-card shadow-sm">
+                <div class="contact-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h4 class="text-center mb-3">Phone Numbers</h4>
+                <p class="text-center mb-2">Reception: (123) 456-7890</p>
+                <p class="text-center mb-0">Appointments: (123) 456-7891</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="contact-card shadow-sm">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h4 class="text-center mb-3">Email Us</h4>
+                <p class="text-center mb-2">info@medicare.com</p>
+                <p class="text-center mb-0">appointments@medicare.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form and Map Section -->
+<section id="contact-form" class="container mb-5">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <h2 class="mb-4">Send Us a Message</h2>
+            <div class="contact-form">
+                <form id="contactForm" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="Havindu Nimadith" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="havindu@example.com" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="(123) 456-7890">
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <select class="form-select" id="department" required>
+                            <option value="" selected disabled>Select Department</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="appointments">Appointments</option>
+                            <option value="billing">Billing & Insurance</option>
+                            <option value="emergency">Emergency Services</option>
+                            <option value="feedback">Feedback & Suggestions</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="privacyPolicy" required>
+                        <label class="form-check-label" for="privacyPolicy">
+                            I agree to the <a href="#">privacy policy</a> and consent to being contacted.
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <h2 class="mb-4">Our Location</h2>
+            <div class="map-container">
+                <!-- Replace with your actual Google Maps embed code -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215685839628!2d-73.9855426845857!3d40.748440479327985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b30eac9f%3A0xaca05ca48ab0c23!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1614352141550!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" title="Medicare Hospital Location Map"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hours & Departments Section -->
+<section class="bg-light py-5 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h2 class="mb-4">Opening Hours</h2>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead class="visually-hidden">
+                            <tr>
+                                <th>Day</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">Monday - Friday</td>
+                                <td>8:00 AM - 8:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Saturday</td>
+                                <td>9:00 AM - 6:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Sunday</td>
+                                <td>10:00 AM - 4:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-danger">Emergency Care</td>
+                                <td class="text-danger">24/7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i> Appointment scheduling ends 1 hour before closing time.
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h2 class="mb-4">Our Departments</h2>
+                <ul class="department-list">
+                    <li><i class="fas fa-heartbeat"></i> Cardiology</li>
+                    <li><i class="fas fa-brain"></i> Neurology</li>
+                    <li><i class="fas fa-bone"></i> Orthopedics</li>
+                    <li><i class="fas fa-stethoscope"></i> Internal Medicine</li>
+                    <li><i class="fas fa-baby"></i> Pediatrics</li>
+                    <li><i class="fas fa-procedures"></i> Surgery</li>
+                    <li><i class="fas fa-user-md"></i> Family Medicine</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="container mb-5">
+    <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+    
+    <div class="accordion" id="contactFaq">
+        <div class="faq-item">
+            <h2 class="faq-header" id="headingOne">
+                <button class="faq-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    How do I schedule an appointment?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#contactFaq">
+                <div class="faq-body">
+                    <p>You can schedule an appointment in several ways:</p>
+                    <ul>
+                        <li>Call our appointments line at (123) 456-7891</li>
+                        <li>Use our online appointment booking system</li>
+                        <li>Email us at appointments@medicare.com</li>
+                        <li>Visit our reception desk in person</li>
+                    </ul>
+                    <p>For new patients, we recommend calling directly so we can properly assess your needs and direct you to the appropriate specialist.</p>
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h2 class="faq-header" id="headingTwo">
+                <button class="faq-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    What insurance plans do you accept?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#contactFaq">
+                <div class="faq-body">
+                    <p>Medicare accepts most major insurance plans, including:</p>
+                    <ul>
+                        <li>Blue Cross Blue Shield</li>
+                        <li>Aetna</li>
+                        <li>Cigna</li>
+                        <li>UnitedHealthcare</li>
+                        <li>Medicare and Medicaid</li>
+                    </ul>
+                    <p>For specific questions about your insurance coverage, please contact our billing department at (123) 456-7893.</p>
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h2 class="faq-header" id="headingThree">
+                <button class="faq-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Do I need a referral to see a specialist?
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#contactFaq">
+                <div class="faq-body">
+                    <p>Whether you need a referral depends on your insurance plan. Many insurance providers require a referral from your primary care physician before seeing a specialist.</p>
+                    <p>We recommend checking with your insurance provider about their referral policy. If you're unsure, our staff can help guide you through the process when you contact us to schedule an appointment.</p>
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h2 class="faq-header" id="headingFour">
+                <button class="faq-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    What should I bring to my first appointment?
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#contactFaq">
+                <div class="faq-body">
+                    <p>For your first appointment, please bring:</p>
+                    <ul>
+                        <li>Valid photo ID (driver's license, passport, etc.)</li>
+                        <li>Insurance card</li>
+                        <li>List of current medications</li>
+                        <li>Medical records or relevant test results</li>
+                        <li>Referral form (if required by your insurance)</li>
+                        <li>Payment method for copays or deductibles</li>
+                    </ul>
+                    <p>Arriving 15 minutes early will allow time to complete any necessary paperwork.</p>
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h2 class="faq-header" id="headingFive">
+                <button class="faq-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    How can I access my medical records?
+                </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#contactFaq">
+                <div class="faq-body">
+                    <p>Medicare provides a secure patient portal where you can access your medical records, test results, and communicate with your healthcare team.</p>
+                    <p>To request full medical records, please complete a medical record release form available at our reception desk or downloadable from our website. You can submit the completed form in person, by mail, or by fax to (123) 456-7899.</p>
+                    <p>Please note that record requests may take 5-7 business days to process.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="container mb-5 text-center">
+    <div class="p-5 bg-primary text-white rounded">
+        <h2 class="mb-4">Need Immediate Assistance?</h2>
+        <p class="lead mb-4">Our patient support team is available to help you with any questions or concerns.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <a href="tel:+1234567890" class="btn btn-light btn-lg d-block mb-3">
+                    <i class="fas fa-phone-alt me-2"></i>Call Us: (123) 456-7890
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'appointment' %}" class="btn btn-outline-light btn-lg d-block mb-3">
+                    <i class="fas fa-calendar-check me-2"></i>Book an Appointment
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for Form Validation -->
+{% block extra_js %}
+<script>
+    // The form validation is handled by main.js initFormValidation function
+    // This is just additional custom validation specific to the contact form
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        
+        if (contactForm) {
+            // Add custom validation if needed beyond what main.js provides
+            console.log('Contact form initialized');
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}
