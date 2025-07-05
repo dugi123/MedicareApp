@@ -103,13 +103,23 @@
 
 {% block content %}
 <div class="container profile-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
     <div class="profile-header d-flex align-items-center">
         <img src="{% static 'images/patient1.jpg' %}" alt="Profile Avatar" class="profile-avatar me-4">
         <div>
-            <h2>Havindu Nimadith</h2>
-            <p class="text-muted mb-0">ID Card: MED-ID-12345678</p>
-            <p class="text-muted mb-3">Joined: June 15, 2024</p>
+            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            <p class="text-muted mb-0">Email: {{ user.email }}</p>
+            <p class="text-muted mb-3">Joined: {{ user.date_joined|date:"F d, Y" }}</p>
             <a href="#" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
         </div>
     </div>
     
@@ -122,6 +132,9 @@
         </div>
         <div class="nav-item">
             <button class="nav-link" id="prescriptions-tab" data-bs-toggle="tab" data-bs-target="#prescriptions" type="button" role="tab" aria-controls="prescriptions" aria-selected="false">Prescriptions</button>
+        </div>
+        <div class="nav-item">
+            <button class="nav-link" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="false">Personal Information</button>
         </div>
         <div class="nav-item">
             <button class="nav-link" id="account-tab" data-bs-toggle="tab" data-bs-target="#account" type="button" role="tab" aria-controls="account" aria-selected="false">Account Settings</button>
@@ -198,6 +211,340 @@
                 <div class="list-group">
                     <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                         <div>
+                            <h5 class="mb-1">Annual Physical Examination</h5>
+                            <p class="mb-1 text-muted">Dr. Sarah Johnson | June 10, 2025</p>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">View</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">Blood Test Results</h5>
+                            <p class="mb-1 text-muted">Medicare Lab | May 25, 2025</p>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">View</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">X-Ray Report</h5>
+                            <p class="mb-1 text-muted">Dr. Michael Chen | May 15, 2025</p>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">View</span>
+                    </a>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="#" class="btn btn-outline-primary">Request Medical Records</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Prescriptions Tab -->
+        <div class="tab-pane fade" id="prescriptions" role="tabpanel" aria-labelledby="prescriptions-tab">
+            <div class="profile-card">
+                <h4 class="mb-4">Current Prescriptions</h4>
+                
+                <div class="prescription-item">
+                    <div class="d-flex justify-content-between">
+                        <h5>Amoxicillin 500mg</h5>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <p class="text-muted">Prescribed by Dr. John Smith on June 15, 2025</p>
+                    <p><strong>Instructions:</strong> Take 1 capsule by mouth 3 times a day for 10 days</p>
+                    <p><strong>Refills:</strong> 0 remaining</p>
+                    <div>
+                        <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+                
+                <div class="prescription-item">
+                    <div class="d-flex justify-content-between">
+                        <h5>Lisinopril 10mg</h5>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <p class="text-muted">Prescribed by Dr. Sarah Johnson on May 20, 2025</p>
+                    <p><strong>Instructions:</strong> Take 1 tablet by mouth once daily</p>
+                    <p><strong>Refills:</strong> 2 remaining</p>
+                    <div>
+                        <a href="#" class="btn btn-outline-primary btn-sm me-2">View Details</a>
+                        <a href="#" class="btn btn-primary btn-sm">Request Refill</a>
+                    </div>
+                </div>
+                
+                <h4 class="mt-5 mb-4">Past Prescriptions</h4>
+                
+                <div class="prescription-item">
+                    <div class="d-flex justify-content-between">
+                        <h5>Ibuprofen 800mg</h5>
+                        <span class="badge bg-secondary">Expired</span>
+                    </div>
+                    <p class="text-muted">Prescribed by Dr. Michael Chen on April 5, 2025</p>
+                    <p><strong>Instructions:</strong> Take 1 tablet by mouth every 8 hours as needed for pain</p>
+                    <p><strong>Refills:</strong> 0 remaining</p>
+                    <div>
+                        <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Personal Information Tab -->
+        <div class="tab-pane fade" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
+            <div class="profile-card">
+                <h4 class="mb-4">Personal Information</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Details</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th>Full Name:</th>
+                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email Address:</th>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                
+                                {% if user_type == 'patient' %}
+                                <!-- Patient-specific fields -->
+                                <tr>
+                                    <th>Phone Number:</th>
+                                    <td>{{ user_profile.phone_number }}</td>
+                                </tr>
+                                {% if user_profile.date_of_birth %}
+                                <tr>
+                                    <th>Date of Birth:</th>
+                                    <td>{{ user_profile.date_of_birth|date:"F d, Y" }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if user_profile.address %}
+                                <tr>
+                                    <th>Address:</th>
+                                    <td>{{ user_profile.address }}</td>
+                                </tr>
+                                {% endif %}
+                                
+                                {% elif user_type == 'doctor' %}
+                                <!-- Doctor-specific fields -->
+                                <tr>
+                                    <th>Phone Number:</th>
+                                    <td>{{ doctor_profile.phone_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Registration Number:</th>
+                                    <td>{{ doctor_profile.registration_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Specialization:</th>
+                                    <td>{{ doctor_profile.specialization }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Years of Experience:</th>
+                                    <td>{{ doctor_profile.years_of_experience }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Hospital Affiliation:</th>
+                                    <td>{{ doctor_profile.hospital_affiliation|default:"Not specified" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Consultation Fee:</th>
+                                    <td>${{ doctor_profile.consultation_fee }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Birth:</th>
+                                    <td>{{ doctor_profile.date_of_birth|date:"F d, Y" }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address:</th>
+                                    <td>{{ doctor_profile.address }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Verification Status:</th>
+                                    <td>{% if doctor_profile.is_verified %}<span class="badge bg-success">Verified</span>{% else %}<span class="badge bg-warning">Pending Verification</span>{% endif %}</td>
+                                </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Profile Picture</h5>
+                        {% if user_type == 'patient' and user_profile.profile_picture %}
+                            <img src="{{ user_profile.profile_picture.url }}" class="img-fluid rounded" style="max-height: 300px;" alt="Profile Picture">
+                        {% elif user_type == 'doctor' and doctor_profile.profile_picture %}
+                            <img src="{{ doctor_profile.profile_picture.url }}" class="img-fluid rounded" style="max-height: 300px;" alt="Profile Picture">
+                        {% else %}
+                            <img src="{% static 'images/patient1.jpg' %}" class="img-fluid rounded" style="max-height: 300px;" alt="Default Profile Picture">
+                        {% endif %}
+                        <div class="mt-3">
+                            <a href="#" class="btn btn-outline-primary">Update Profile Picture</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="#" class="btn btn-primary">Edit Personal Information</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Account Settings Tab -->
+        <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
+            <div class="profile-card">
+                <h4 class="mb-4">Account Settings</h4>
+                
+                <form method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Profile Information -->
+                    <h5 class="mb-3">Personal Information</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="first-name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first-name" name="first_name" value="{{ user.first_name }}" readonly>
+                            <div class="form-text text-muted">Please contact support to change your name</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last-name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last-name" name="last_name" value="{{ user.last_name }}" readonly>
+                        </div>
+                    </div>
+                    
+                    {% if user_type == 'patient' %}
+                    <!-- Patient-specific fields -->
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone_number" value="{{ user_profile.phone_number }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" name="address" rows="3">{{ user_profile.address }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+                        {% if user_profile.profile_picture %}
+                            <div class="mt-2">
+                                <img src="{{ user_profile.profile_picture.url }}" alt="Current profile" style="max-width: 100px; border-radius: 5px;">
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% elif user_type == 'doctor' %}
+                    <!-- Doctor-specific fields -->
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone_number" value="{{ doctor_profile.phone_number }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" name="address" rows="3">{{ doctor_profile.address }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <input type="text" class="form-control" id="specialization" name="specialization" value="{{ doctor_profile.specialization }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="years_of_experience" class="form-label">Years of Experience</label>
+                        <input type="number" class="form-control" id="years_of_experience" name="years_of_experience" min="0" value="{{ doctor_profile.years_of_experience }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="hospital_affiliation" class="form-label">Hospital Affiliation</label>
+                        <input type="text" class="form-control" id="hospital_affiliation" name="hospital_affiliation" value="{{ doctor_profile.hospital_affiliation }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="consultation_fee" class="form-label">Consultation Fee ($)</label>
+                        <input type="number" class="form-control" id="consultation_fee" name="consultation_fee" min="0" step="0.01" value="{{ doctor_profile.consultation_fee }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="license_document" class="form-label">License Document</label>
+                        <input type="file" class="form-control" id="license_document" name="license_document">
+                        {% if doctor_profile.license_document %}
+                            <div class="mt-2">
+                                <a href="{{ doctor_profile.license_document.url }}" target="_blank" class="btn btn-sm btn-outline-primary">View Current License</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+                        {% if doctor_profile.profile_picture %}
+                            <div class="mt-2">
+                                <img src="{{ doctor_profile.profile_picture.url }}" alt="Current profile" style="max-width: 100px; border-radius: 5px;">
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Email Settings -->
+                    <h5 class="mb-3">Email Settings</h5>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                        <div class="form-text">This email will be used for login and notifications</div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Password Settings -->
+                    <h5 class="mb-3">Change Password</h5>
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+                
+                <hr class="my-4">
+                
+                <h5 class="mb-3">Account Actions</h5>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary me-2">Logout</a>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                <p>All your data, including medical records and appointment history, will be permanently removed.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
                             <h6 class="mb-1">Annual Physical Examination</h6>
                             <small class="text-muted">June 10, 2025 | Dr. Emily Wilson</small>
                         </div>
@@ -276,81 +623,7 @@
             </div>
         </div>
         
-        <!-- Account Settings Tab -->
-        <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
-            <div class="profile-card">
-                <h4 class="mb-4">Account Settings</h4>
-                
-                <form>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="first-name" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="first-name" value="Havindu">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="last-name" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="last-name" value="Nimadith">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id-card-name" class="form-label">Full Name (as on ID Card)</label>
-                        <input type="text" class="form-control" id="id-card-name" value="Havindu Nimadith">
-                    </div>
-                    <div class="mb-3">
-                        <label for="id-card-number" class="form-label">ID Card Number</label>
-                        <input type="text" class="form-control" id="id-card-number" value="0123456789" readonly>
-                        <div class="form-text text-muted">ID card number cannot be changed</div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <p class="form-label">ID Card (Front)</p>
-                            <div class="border p-2 rounded">
-                                <img src="{% static 'images/patient1.jpg' %}" alt="ID Card Front" class="img-fluid rounded">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="form-label">ID Card (Back)</p>
-                            <div class="border p-2 rounded">
-                                <img src="{% static 'images/patient1.jpg' %}" alt="ID Card Back" class="img-fluid rounded">
-                            </div>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <button type="button" class="btn btn-outline-primary btn-sm">Update ID Card Images</button>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" value="(123) 456-7890">
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control" id="address" rows="3">Matara</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="emergency-contact" class="form-label">Emergency Contact</label>
-                        <input type="text" class="form-control" id="emergency-contact" value="(987) 654-3210">
-                    </div>
-                    
-                    <h5 class="mt-4 mb-3">Additional Settings</h5>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email Address (Optional)</label>
-                        <input type="email" class="form-control" id="email" value="havindunimadith7@gmail.com">
-                    </div>
-                    
-                    <h5 class="mt-4 mb-3">Notification Settings</h5>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="email-notifications" checked>
-                        <label class="form-check-label" for="email-notifications">Email Notifications</label>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="sms-notifications" checked>
-                        <label class="form-check-label" for="sms-notifications">SMS Notifications</label>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-        </div>
+        <!-- This duplicate account tab was removed -->
     </div>
 </div>
 {% endblock %}

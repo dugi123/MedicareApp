@@ -15,6 +15,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Custom styles for account dropdown */
+        .dropdown-header {
+            font-weight: bold;
+            padding: 8px 16px;
+            white-space: normal;
+        }
+        .dropdown-header small {
+            display: block;
+            margin-top: 2px;
+            font-weight: normal;
+        }
+        #authDropdown {
+            min-width: 120px;
+        }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -66,19 +82,39 @@
                             <i class="fas fa-phone-alt me-2"></i>Emergency: 123-456-7890
                         </a>
                         
-                        <!-- Authentication dropdown - For demo purposes only -->
-                        <!-- In a real app, you would check if the user is authenticated -->
+                        <!-- Authentication dropdown -->
                         <div class="dropdown">
                             <button class="btn btn-outline-primary dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i> Account
+                                <i class="fas fa-user-circle me-1"></i> 
+                                {% if user.is_authenticated %}
+                                    {% if user.first_name %}
+                                        {{ user.first_name }}
+                                    {% else %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                {% else %}
+                                    Account
+                                {% endif %}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
-                                <li><h6 class="dropdown-header">Guest User</h6></li>
-                                <li><a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
-                                <li><a class="dropdown-item" href="{% url 'signup' %}"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header">Demo Features</h6></li>
-                                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-id-card me-2"></i>View Profile Demo</a></li>
+                                {% if user.is_authenticated %}
+                                    <li><h6 class="dropdown-header">
+                                        {% if user.first_name and user.last_name %}
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        {% else %}
+                                            {{ user.username }}
+                                        {% endif %}
+                                        <br><small class="text-muted">{{ user.email }}</small>
+                                    </h6></li>
+                                    <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i>My Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'appointment' %}"><i class="fas fa-calendar-alt me-2"></i>My Appointments</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                                {% else %}
+                                    <li><h6 class="dropdown-header">Guest User</h6></li>
+                                    <li><a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'signup' %}"><i class="fas fa-user-plus me-2"></i>Sign Up</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>

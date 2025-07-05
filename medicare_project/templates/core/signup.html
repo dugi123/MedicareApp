@@ -6,7 +6,7 @@
 {% block extra_css %}
 <style>
     .signup-container {
-        max-width: 500px;
+        max-width: 700px;
         margin: 80px auto;
         padding: 30px;
         border-radius: 10px;
@@ -37,43 +37,73 @@
         margin-top: 20px;
     }
     
-    /* ID Card Upload Styles */
-    .id-card-preview {
-        max-height: 200px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        margin-top: 10px;
+    .user-type-selection {
+        text-align: center;
+        margin-bottom: 40px;
     }
     
-    .id-card-upload-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .user-type-btn {
+        display: inline-block;
+        width: 180px;
+        height: 180px;
+        margin: 0 15px;
+        padding: 30px 20px;
+        border-radius: 10px;
         background-color: #f8f9fa;
-        border: 2px dashed #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        transition: all 0.3s ease;
+        border: 2px solid #dee2e6;
+        text-align: center;
         cursor: pointer;
+        transition: all 0.3s ease;
     }
     
-    .id-card-upload-btn:hover {
-        background-color: #e9ecef;
-        border-color: #adb5bd;
+    .user-type-btn:hover {
+        border-color: #0d6efd;
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
     }
     
-    /* ID Card Form Section */
-    .id-card-section {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
-        background-color: #f8f9fa;
+    .user-type-btn.active {
+        border-color: #0d6efd;
+        background-color: rgba(13, 110, 253, 0.1);
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
     }
     
-    .id-card-section h5 {
-        margin-bottom: 15px;
+    .user-type-btn i {
+        font-size: 48px;
         color: #0d6efd;
+        margin-bottom: 15px;
+        display: block;
+    }
+    
+    .user-type-btn h4 {
+        margin-bottom: 10px;
+        color: #212529;
+    }
+    
+    .user-type-btn p {
+        font-size: 14px;
+        color: #6c757d;
+    }
+    
+    .form-section {
+        display: none;
+    }
+    
+    .form-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    .doctor-fields {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 30px;
+        border-left: 4px solid #0d6efd;
     }
 </style>
 {% endblock %}
@@ -84,14 +114,47 @@
         <div class="signup-header">
             <img src="{% static 'images/logo-hospital.svg' %}" alt="Medicare Logo" height="70" class="mb-4">
             <h2>Create an Account</h2>
-            <p class="text-muted">Register with your ID card for personalized healthcare services</p>
-            <div class="alert alert-info mt-3">
-                <i class="fas fa-info-circle me-2"></i> New users must upload both front and back images of their ID card for verification.
-            </div>
+            <p class="text-muted">Register for personalized healthcare services</p>
         </div>
         
-        <form class="signup-form" method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+        {% if messages %}
+        <div class="messages mb-4">
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form class="signup-form" method="post" action="{% url 'signup' %}" enctype="multipart/form-data">
             {% csrf_token %}
+            
+            <!-- User Type Selection -->
+            <div class="user-type-selection mb-4">
+                <p class="mb-3 fw-bold">Please select your account type:</p>
+                <div class="d-flex justify-content-center">
+                    <div class="user-type-btn" id="patient-btn" data-type="patient">
+                        <i class="fas fa-user"></i>
+                        <h4>Patient</h4>
+                    </div>
+                    <div class="user-type-btn" id="doctor-btn" data-type="doctor">
+                        <i class="fas fa-user-md"></i>
+                        <h4>Doctor</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hidden radio buttons for user type -->
+            <div class="d-none">
+                <input type="radio" name="user_type" id="patient-type" value="patient">
+                <input type="radio" name="user_type" id="doctor-type" value="doctor">
+            </div>
+            {% csrf_token %}
+            
+            <!-- Form fields section - initially hidden -->
+            <div class="form-section" id="signup-form-section">
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -108,50 +171,82 @@
             </div>
             
             <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            
+            <div class="mb-3">
                 <label for="phone" class="form-label">Phone Number</label>
                 <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
             </div>
-            
-            <div class="id-card-section">
-                <h5>ID Card Information</h5>            <div class="mb-3">
-                <label for="id-card-name" class="form-label">Full Name (as on ID Card)</label>
-                <input type="text" class="form-control" id="id-card-name" name="id_card_name" placeholder="Enter the full name as it appears on your ID card" required>
+              <div class="mb-3">
+                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                <div class="form-text">Required for providing age-appropriate healthcare information</div>
             </div>
+            
             <div class="mb-3">
-                <label for="id-card-number" class="form-label">ID Card Number</label>
-                <input type="text" class="form-control" id="id-card-number" name="id_card_number" placeholder="Enter your ID card number" required>
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
             </div>
             
-            <div class="id-card-section mb-4">
-                <h5><i class="fas fa-id-card me-2"></i>ID Card Images (Required for Registration)</h5>
+            <!-- Doctor-specific fields (hidden by default) -->
+            <div id="doctor-fields" style="display: none;">
                 <div class="mb-3">
-                    <label for="id-card-upload-front" class="form-label">Upload ID Card (Front)</label>
-                    <input type="file" class="form-control" id="id-card-upload-front" name="id_card_front" accept="image/*" required>
-                    <div class="form-text">Please upload a clear image of the front of your ID card</div>
-                    <div id="id-preview-container-front" class="mt-2 d-none">
-                        <img id="id-preview-front" src="#" alt="ID Card Front Preview" class="img-fluid mt-2 border rounded" style="max-height: 200px;">
-                    </div>
+                    <label for="registration_number" class="form-label">Registration Number</label>
+                    <input type="text" class="form-control" id="registration_number" name="registration_number" placeholder="Enter your government registration number">
+                    <div class="form-text">Your government-issued medical registration number</div>
                 </div>
+                
                 <div class="mb-3">
-                    <label for="id-card-upload-back" class="form-label">Upload ID Card (Back)</label>
-                    <input type="file" class="form-control" id="id-card-upload-back" name="id_card_back" accept="image/*" required>
-                    <div class="form-text">Please upload a clear image of the back of your ID card</div>
-                    <div id="id-preview-container-back" class="mt-2 d-none">
-                        <img id="id-preview-back" src="#" alt="ID Card Back Preview" class="img-fluid mt-2 border rounded" style="max-height: 200px;">
-                    </div>
+                    <label for="specialization" class="form-label">Specialization</label>
+                    <input type="text" class="form-control" id="specialization" name="specialization" placeholder="Enter your medical specialization">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="years_of_experience" class="form-label">Years of Experience</label>
+                    <input type="number" class="form-control" id="years_of_experience" name="years_of_experience" min="0" placeholder="Enter years of experience">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="hospital_affiliation" class="form-label">Hospital Affiliation</label>
+                    <input type="text" class="form-control" id="hospital_affiliation" name="hospital_affiliation" placeholder="Enter your hospital affiliation">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="consultation_fee" class="form-label">Consultation Fee</label>
+                    <input type="number" class="form-control" id="consultation_fee" name="consultation_fee" min="0" step="0.01" placeholder="Enter your consultation fee">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="license_document" class="form-label">License Document</label>
+                    <input type="file" class="form-control" id="license_document" name="license_document">
+                    <div class="form-text">Upload a copy of your medical license (PDF, JPG, or PNG)</div>
                 </div>
             </div>
+            
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+                <div class="form-text">Password must be 8-14 characters with uppercase, lowercase, number, and special character</div>
             </div>
+            
+            <div class="mb-3">
+                <label for="password-confirm" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="password-confirm" name="password_confirm" placeholder="Confirm your password" required>
+            </div>
+            
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
                 <label class="form-check-label" for="terms">I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a></label>
             </div>
             <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                
+                <div class="auth-links mt-4">
+                    <p>Already have an account? <a href="{% url 'login' %}" class="text-primary">Login</a></p>
+                </div>
+            </div> <!-- End of form-section -->
         </form>
-        
-        <div class="auth-links">
-            <p>Already have an account? <a href="{% url 'login' %}" class="text-primary">Login</a></p>
-        </div>
     </div>
 </div>
 {% endblock %}
@@ -160,84 +255,176 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const signupForm = document.querySelector('.signup-form');
-        const idCardFrontInput = document.getElementById('id-card-upload-front');
-        const idCardBackInput = document.getElementById('id-card-upload-back');
-        const idPreviewFront = document.getElementById('id-preview-front');
-        const idPreviewBack = document.getElementById('id-preview-back');
-        const idPreviewContainerFront = document.getElementById('id-preview-container-front');
-        const idPreviewContainerBack = document.getElementById('id-preview-container-back');
+        const password = document.getElementById('password');
+        const passwordConfirm = document.getElementById('password-confirm');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
         
-        // Show preview of uploaded ID card front image
-        idCardFrontInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    idPreviewFront.src = e.target.result;
-                    idPreviewContainerFront.classList.remove('d-none');
-                }
-                
-                reader.readAsDataURL(this.files[0]);
+        // User type selection functionality
+        const patientBtn = document.getElementById('patient-btn');
+        const doctorBtn = document.getElementById('doctor-btn');
+        const patientType = document.getElementById('patient-type');
+        const doctorType = document.getElementById('doctor-type');
+        const doctorFields = document.getElementById('doctor-fields');
+        const signupFormSection = document.getElementById('signup-form-section');
+        
+        // Set active user type button and show form
+        function setActiveUserType(userType) {
+            if (userType === 'patient') {
+                patientBtn.classList.add('active');
+                doctorBtn.classList.remove('active');
+                patientType.checked = true;
+                doctorFields.style.display = 'none';
+                // Make doctor fields not required
+                document.querySelectorAll('#doctor-fields input').forEach(input => {
+                    input.removeAttribute('required');
+                });
+            } else {
+                doctorBtn.classList.add('active');
+                patientBtn.classList.remove('active');
+                doctorType.checked = true;
+                doctorFields.style.display = 'block';
+                // Make doctor fields required
+                document.querySelectorAll('#doctor-fields input').forEach(input => {
+                    if (input.type !== 'file') {
+                        input.setAttribute('required', '');
+                    }
+                });
             }
+            
+            // Show the signup form section
+            signupFormSection.classList.add('active');
+        }
+        
+        // User type button click handlers
+        patientBtn.addEventListener('click', function() {
+            setActiveUserType('patient');
         });
         
-        // Show preview of uploaded ID card back image
-        idCardBackInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    idPreviewBack.src = e.target.result;
-                    idPreviewContainerBack.classList.remove('d-none');
-                }
-                
-                reader.readAsDataURL(this.files[0]);
-            }
+        doctorBtn.addEventListener('click', function() {
+            setActiveUserType('doctor');
         });
         
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Initialize - no user type selected by default
+        signupFormSection.classList.remove('active');
+        patientBtn.classList.remove('active');
+        doctorBtn.classList.remove('active');
+        
+        // Password validation
+        function validatePassword() {
+            const value = password.value;
+            let errorMessage = '';
             
-            // Simple validation (in a real app, this would be server-side)
-            const firstName = document.getElementById('first-name').value;
-            const lastName = document.getElementById('last-name').value;
-            const idCardName = document.getElementById('id-card-name').value;
-            const idCardNumber = document.getElementById('id-card-number').value;
-            const idCardFront = document.getElementById('id-card-upload-front').files[0];
-            const idCardBack = document.getElementById('id-card-upload-back').files[0];
-            const phone = document.getElementById('phone').value;
-            const terms = document.getElementById('terms').checked;
-            
-            if (!firstName || !lastName || !idCardName || !idCardNumber || !phone) {
-                alert('Please fill in all required fields.');
-                return;
+            // Check length
+            if (value.length < 8 || value.length > 14) {
+                errorMessage = 'Password must be between 8 and 14 characters long';
+            }
+            // Check for uppercase
+            else if (!/[A-Z]/.test(value)) {
+                errorMessage = 'Password must contain at least one uppercase letter';
+            }
+            // Check for lowercase
+            else if (!/[a-z]/.test(value)) {
+                errorMessage = 'Password must contain at least one lowercase letter';
+            }
+            // Check for number
+            else if (!/\d/.test(value)) {
+                errorMessage = 'Password must contain at least one number';
+            }
+            // Check for special character
+            else if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value)) {
+                errorMessage = 'Password must contain at least one special character';
             }
             
-            if (!idCardFront) {
-                alert('Please upload the front of your ID card.');
-                return;
+            password.setCustomValidity(errorMessage);
+            
+            // Also check if passwords match
+            if (password.value !== passwordConfirm.value) {
+                passwordConfirm.setCustomValidity("Passwords don't match");
+            } else {
+                passwordConfirm.setCustomValidity('');
+            }
+        }
+        
+        function validateEmail() {
+            const value = email.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(value)) {
+                email.setCustomValidity('Please enter a valid email address');
+            } else {
+                email.setCustomValidity('');
+            }
+        }
+        
+        function validatePhone() {
+            const value = phone.value;
+            const phoneRegex = /^\+?\d{10,15}$/;
+            
+            if (!phoneRegex.test(value)) {
+                phone.setCustomValidity('Please enter a valid phone number (10-15 digits)');
+            } else {
+                phone.setCustomValidity('');
+            }
+        }
+        
+        password.addEventListener('input', validatePassword);
+        passwordConfirm.addEventListener('input', validatePassword);
+        email.addEventListener('input', validateEmail);
+        phone.addEventListener('input', validatePhone);
+        
+        // Show validation message below the field
+        const showValidationMessage = (input) => {
+            if (input.validationMessage) {
+                let errorDiv = input.nextElementSibling;
+                if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    input.parentNode.insertBefore(errorDiv, input.nextElementSibling);
+                }
+                errorDiv.textContent = input.validationMessage;
+                errorDiv.style.display = 'block';
+                input.classList.add('is-invalid');
+            } else {
+                let errorDiv = input.nextElementSibling;
+                if (errorDiv && errorDiv.classList.contains('invalid-feedback')) {
+                    errorDiv.textContent = '';
+                    errorDiv.style.display = 'none';
+                }
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            }
+        };
+        
+        // Add event listeners for all form inputs
+        signupForm.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => showValidationMessage(input));
+            input.addEventListener('blur', () => showValidationMessage(input));
+        });
+        
+        signupForm.addEventListener('submit', function(event) {
+            // Validate all fields
+            let isValid = true;
+            
+            signupForm.querySelectorAll('input').forEach(input => {
+                if (!input.checkValidity()) {
+                    isValid = false;
+                    showValidationMessage(input);
+                }
+            });
+            
+            if (!isValid) {
+                event.preventDefault();
+                return false;
             }
             
-            if (!idCardBack) {
-                alert('Please upload the back of your ID card.');
-                return;
-            }
-            
-            if (!terms) {
-                alert('Please agree to the Terms of Service and Privacy Policy.');
-                return;
-            }
-            
-            // Show loading indicator (optional)
+            // Show loading indicator
             const submitBtn = signupForm.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Creating account...';
             submitBtn.disabled = true;
             
-            // Simulate API call delay (remove in real app)
-            setTimeout(function() {
-                // Redirect to profile page
-                window.location.href = "{% url 'profile' %}";
-            }, 1500);
+            // Allow form submission to proceed
+            return true;
         });
     });
 </script>
