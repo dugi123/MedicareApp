@@ -6,7 +6,7 @@
 {% block extra_css %}
 <style>
     .login-container {
-        max-width: 450px;
+        max-width: 500px;
         margin: 80px auto;
         padding: 30px;
         border-radius: 10px;
@@ -37,18 +37,68 @@
         margin-top: 20px;
     }
     
-    /* ID Card Form Section */
-    .id-card-section {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
-        background-color: #f8f9fa;
+    .user-type-selection {
+        text-align: center;
+        margin-bottom: 30px;
     }
     
-    .id-card-section h5 {
-        margin-bottom: 15px;
+    .user-type-btn {
+        display: inline-block;
+        width: 160px;
+        height: 160px;
+        margin: 0 15px;
+        padding: 25px 15px;
+        border-radius: 10px;
+        background-color: #f8f9fa;
+        border: 2px solid #dee2e6;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .user-type-btn:hover {
+        border-color: #0d6efd;
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
+    }
+    
+    .user-type-btn.active {
+        border-color: #0d6efd;
+        background-color: rgba(13, 110, 253, 0.1);
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
+    }
+    
+    .user-type-btn i {
+        font-size: 42px;
         color: #0d6efd;
+        margin-bottom: 15px;
+        display: block;
+    }
+    
+    .user-type-btn h4 {
+        margin-bottom: 8px;
+        color: #212529;
+    }
+    
+    .user-type-btn p {
+        font-size: 13px;
+        color: #6c757d;
+    }
+    
+    .form-section {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .form-section.active {
+        display: block;
+        opacity: 1;
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
 </style>
 {% endblock %}
@@ -59,36 +109,77 @@
         <div class="login-header">
             <img src="{% static 'images/logo-hospital.svg' %}" alt="Medicare Logo" height="70" class="mb-4">
             <h2>Welcome Back</h2>
-            <p class="text-muted">Sign in with your ID card details to access your Medicare account</p>
-            <div class="alert alert-info mt-3">
-                <i class="fas fa-info-circle me-2"></i> Existing users only need to enter their ID card name and number.
+            <p class="text-muted">Sign in to access your Medicare account</p>
+        </div>
+        
+        {% if messages %}
+        <div class="messages mb-4">
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- User Type Selection -->
+        <div class="user-type-selection mb-4">
+            <p class="mb-3 fw-bold">Please select your account type:</p>
+            <div class="d-flex justify-content-center">
+                <div class="user-type-btn active" id="patient-btn" data-type="patient">
+                    <i class="fas fa-user"></i>
+                    <h4>Patient</h4>
+                </div>
+                <div class="user-type-btn" id="doctor-btn" data-type="doctor">
+                    <i class="fas fa-user-md"></i>
+                    <h4>Doctor</h4>
+                </div>
             </div>
         </div>
         
-        <form class="login-form" method="post" action="{% url 'login' %}" enctype="multipart/form-data">
+        <form class="login-form" method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <div class="id-card-section mb-4">
-                <h5><i class="fas fa-id-card me-2"></i>ID Card Verification</h5>
-                <div class="mb-3">
-                    <label for="id-card-name" class="form-label">Full Name (as on ID Card)</label>
-                    <input type="text" class="form-control" id="id-card-name" name="id_card_name" placeholder="Enter the full name as it appears on your ID" required>
+            <!-- Hidden radio buttons for user type -->
+            <div class="d-none">
+                <input type="radio" name="user_type" id="patient-type" value="patient" checked>
+                <input type="radio" name="user_type" id="doctor-type" value="doctor">
+            </div>
+            
+            <!-- Login Form Section - Initially hidden -->
+            <div class="form-section" id="login-form-section">
+                <!-- Patient login fields (email) - shown/hidden via JS -->
+                <div id="patient-login-fields">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address">
+                    </div>
                 </div>
+                
+                <!-- Doctor login fields (registration number) - shown/hidden via JS -->
+                <div id="doctor-login-fields" style="display: none;">
+                    <div class="mb-3">
+                        <label for="registration_number" class="form-label">Registration Number</label>
+                        <input type="text" class="form-control" id="registration_number" name="registration_number" placeholder="Enter your government registration number">
+                    </div>
+                </div>
+                
                 <div class="mb-3">
-                    <label for="id-card-number" class="form-label">ID Card Number</label>
-                    <input type="text" class="form-control" id="id-card-number" name="id_card_number" placeholder="Enter your ID card number" required>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
+                    <label class="form-check-label" for="remember-me">Remember me</label>
+                    <a href="#" class="float-end text-primary">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+                
+                <div class="auth-links mt-4">
+                    <p>Don't have an account? <a href="{% url 'signup' %}" class="text-primary">Sign up</a></p>
                 </div>
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
-                <label class="form-check-label" for="remember-me">Remember me</label>
-                <a href="{% url 'signup' %}" class="float-end text-primary">Don't have an ID?</a>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Verify & Login</button>
         </form>
-        
-        <div class="auth-links">
-            <p>Don't have an account? <a href="{% url 'signup' %}" class="text-primary">Sign up</a></p>
-        </div>
     </div>
 </div>
 {% endblock %}
@@ -96,36 +187,74 @@
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const loginForm = document.querySelector('.login-form');
+        // User type selection functionality
+        const patientBtn = document.getElementById('patient-btn');
+        const doctorBtn = document.getElementById('doctor-btn');
+        const patientType = document.getElementById('patient-type');
+        const doctorType = document.getElementById('doctor-type');
+        const loginFormSection = document.getElementById('login-form-section');
         
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simple validation (in a real app, this would be server-side)
-            const idCardName = document.getElementById('id-card-name').value;
-            const idCardNumber = document.getElementById('id-card-number').value;
-            
-            if (!idCardName) {
-                alert('Please enter your full name as it appears on your ID card.');
-                return;
+        // Get login field containers
+        const patientLoginFields = document.getElementById('patient-login-fields');
+        const doctorLoginFields = document.getElementById('doctor-login-fields');
+        const emailInput = document.getElementById('email');
+        const registrationInput = document.getElementById('registration_number');
+        
+        // Set active user type button and show form
+        function setActiveUserType(userType) {
+            if (userType === 'patient') {
+                patientBtn.classList.add('active');
+                doctorBtn.classList.remove('active');
+                patientType.checked = true;
+                
+                // Show patient fields, hide doctor fields
+                patientLoginFields.style.display = 'block';
+                doctorLoginFields.style.display = 'none';
+                emailInput.setAttribute('required', '');
+                registrationInput.removeAttribute('required');
+            } else {
+                doctorBtn.classList.add('active');
+                patientBtn.classList.remove('active');
+                doctorType.checked = true;
+                
+                // Show doctor fields, hide patient fields
+                doctorLoginFields.style.display = 'block';
+                patientLoginFields.style.display = 'none';
+                registrationInput.setAttribute('required', '');
+                emailInput.removeAttribute('required');
             }
             
-            if (!idCardNumber) {
-                alert('Please enter your ID card number.');
-                return;
-            }
-            
-            // Show loading indicator (optional)
-            const submitBtn = loginForm.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Verifying...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call delay (remove in real app)
-            setTimeout(function() {
-                // Redirect to profile page
-                window.location.href = "{% url 'profile' %}";
-            }, 1500);
+            // Show the login form section
+            loginFormSection.classList.add('active');
+        }
+        
+        // User type button click handlers
+        patientBtn.addEventListener('click', function() {
+            setActiveUserType('patient');
         });
+        
+        doctorBtn.addEventListener('click', function() {
+            setActiveUserType('doctor');
+        });
+        
+        // Initialize - no user type selected by default
+        loginFormSection.classList.remove('active');
+        patientBtn.classList.remove('active');
+        doctorBtn.classList.remove('active');
+        
+        // Form submission handler
+        const loginForm = document.querySelector('.login-form');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function() {
+                // Show loading indicator
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Verifying...';
+                submitBtn.disabled = true;
+                
+                // Allow form submission to proceed normally
+                // The backend will handle validation and redirection
+            });
+        }
     });
 </script>
 {% endblock %}

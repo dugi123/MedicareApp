@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.SessionDebugMiddleware',  # Custom middleware for session debugging
     'livereload.middleware.LiveReloadScript',
 ]
 
@@ -83,9 +84,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS': {
+            'timeout': 120,  # Increase timeout to 120 seconds
+            'isolation_level': None,  # Use SQLite's autocommit mode
+            'check_same_thread': False,  # Allow threads to share connection
+            'cached_statements': 512,  # Increase SQLite statement cache
+        },
+        'CONN_MAX_AGE': 0,  # Close connections after each request
+        'ATOMIC_REQUESTS': True,  # Wrap each request in a transaction
     }
 }
 
+# Improved database settings
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -96,6 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -103,6 +116,21 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'core.validators.PasswordComplexityValidator',
+        'OPTIONS': {
+            'min_length': 8,
+            'max_length': 14,
+        }
+    },
+]
+
+# Password hashers
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
 
@@ -133,3 +161,29 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Authentication settings
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
+
+# Custom authentication backends
+AUTHENTICATION_BACKENDS = [
+    'core.auth_backends.EmailBackend',  # Our custom email auth backend
+    'django.contrib.auth.backends.ModelBackend',  # Default backend as fallback
+]
+
+# Session settings - Consolidated
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Store sessions in the database
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookie
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_NAME = 'medicare_sessionid'  # Custom session cookie name
+SESSION_SAVE_EVERY_REQUEST = False  # Only save when needed to reduce lock contention
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Session expires when the browser is closed
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'  # More secure serializer
+SESSION_COOKIE_SAMESITE = 'Lax'  # Add CSRF protection but allow OAuth flows
+SESSION_ENGINE_OPTIONS = {
+    'timeout': 60,  # Session timeout
+    'retry_delay': 0.5,  # Retry delay in seconds
+    'retry_count': 3,  # Number of retries
+}
